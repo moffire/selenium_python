@@ -3,28 +3,43 @@ from selenium.webdriver.common.by import By
 
 
 class TestAddGroup:
-  def setup_method(self, method):
-    self.driver = webdriver.Firefox()
-    self.vars = {}
-  
-  def teardown_method(self, method):
-    self.driver.quit()
-  
-  def test_add_group(self):
-    self.driver.get("http://localhost/addressbook/index.php")
-    self.driver.set_window_size(911, 692)
-    self.driver.find_element(By.NAME, "user").send_keys("admin")
-    self.driver.find_element(By.NAME, "pass").click()
-    self.driver.find_element(By.NAME, "pass").send_keys("secret")
-    self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
-    self.driver.find_element(By.LINK_TEXT, "groups").click()
-    self.driver.find_element(By.NAME, "new").click()
-    self.driver.find_element(By.NAME, "group_name").click()
-    self.driver.find_element(By.NAME, "group_name").send_keys("test_group")
-    self.driver.find_element(By.NAME, "group_header").click()
-    self.driver.find_element(By.NAME, "group_header").send_keys("header")
-    self.driver.find_element(By.NAME, "group_footer").click()
-    self.driver.find_element(By.NAME, "group_footer").send_keys("footer")
-    self.driver.find_element(By.NAME, "submit").click()
-    self.driver.find_element(By.LINK_TEXT, "home").click()
-  
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        self.driver.implicitly_wait(10)
+
+    def tearDown(self):
+        self.driver.quit()
+
+    def open_home_page(self, driver):
+        driver.get("http://localhost/addressbook/index.php")
+
+    def login(self, driver):
+        driver.find_element(By.NAME, "user").clear().send_keys("admin")
+        driver.find_element(By.NAME, "pass").click()
+        driver.find_element(By.NAME, "pass").clear().send_keys("secret")
+        driver.find_element(By.CSS_SELECTOR, "input[type=submit]").click()
+
+    def open_groups_page(self, driver):
+        driver.find_element(By.LINK_TEXT, "groups").click()
+
+    def create_group(self, driver):
+        # init group creation
+        driver.find_element(By.NAME, "new").click()
+        # fill group form
+        driver.find_element(By.NAME, "group_name").click()
+        driver.find_element(By.NAME, "group_name").send_keys("test_group")
+        driver.find_element(By.NAME, "group_header").click()
+        driver.find_element(By.NAME, "group_header").send_keys("header")
+        driver.find_element(By.NAME, "group_footer").click()
+        driver.find_element(By.NAME, "group_footer").send_keys("footer")
+        # submit group creation
+        driver.find_element(By.NAME, "submit").click()
+
+    def test_add_group(self):
+        driver = self.driver
+        self.open_home_page(driver)
+        self.login(driver)
+        self.open_groups_page(driver)
+        self.create_group(driver)
+        self.open_home_page(driver)
+
