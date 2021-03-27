@@ -3,11 +3,10 @@ from selenium.webdriver.common.by import By
 
 
 class Application:
-    driver = webdriver.Chrome()
 
     def __init__(self):
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(10)
+        self.driver = webdriver.Chrome()
+        self.driver.implicitly_wait(10)
 
     def open_home_page(self):
         driver = self.driver
@@ -23,7 +22,7 @@ class Application:
 
     def logout(self):
         driver = self.driver
-        driver.find_element(By.LINK_TEXT, "logout").click()
+        driver.find_element(By.LINK_TEXT, "Logout").click()
 
     def open_groups_page(self):
         driver = self.driver
