@@ -1,6 +1,4 @@
 from selenium.webdriver.common.by import By
-from . import application
-
 
 class SessionHelper:
 
